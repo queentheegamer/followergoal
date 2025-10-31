@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Follower Goal Widget</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: transparent;
+  }
+
+  /* Container matching your overlay */
+  .goal-container {
+    width: 300px;       /* slim rectangle */
+    height: 45px;
+    border: 3px solid #F4A7B9; /* rosy border */
+    border-radius: 14px;
+    background: rgba(0,0,0,0.15); /* slight transparent background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #F4A7B9;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(244, 167, 185, 0.5); /* soft glow */
+  }
+
+  /* Progress bar background */
+  .progress-bar {
+    width: 90%;
+    height: 10px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 6px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+
+  /* Progress bar fill */
+  .progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #F4A7B9, #FFBCCF);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+  }
+
+  /* Text with glow to match overlay */
+  #goal-text {
+    font-weight: 500;
+    text-shadow: 0 0 6px rgba(244, 167, 185, 0.7);
+  }
+</style>
+</head>
+<body>
+
+<div class="goal-container">
+  <div id="goal-text">Followers: 658 / 2000</div>
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
+  </div>
+</div>
+
+<script>
+  const goalAmount = 2000;
+  let currentFollowers = 658;
+
+  function updateGoal(count) {
+    if(count > goalAmount) count = goalAmount;
+    currentFollowers = count;
+    const percent = (currentFollowers / goalAmount) * 100;
+    document.getElementById('goal-text').innerText = `Followers: ${currentFollowers} / ${goalAmount}`;
+    document.getElementById('progress').style.width = percent + '%';
+  }
+
+  // TEST MODE: simulate followers increasing
+  let testCount = currentFollowers;
+  setInterval(() => {
+    if(testCount < goalAmount){
+      testCount += Math.floor(Math.random() * 3); 
+      updateGoal(testCount);
+    }
+  }, 1000);
+
+  // FUTURE LIVE FETCH (replace test mode)
+  /*
+  async function fetchFollowers() {
+    try {
+      const resp = await fetch('https://YOUR-HOSTED-SCRIPT.com/followers');
+      const data = await resp.json();
+      return data.followers;
+    } catch (e) {
+      console.error('Error fetching followers:', e);
+      return null;
+    }
+  }
+
+  setInterval(async () => {
+    const liveCount = await fetchFollowers();
+    if(liveCount !== null){
+      updateGoal(liveCount);
+    }
+  }, 30000); // every 30 seconds
+  */
+</script>
+
+</body>
+</html>
